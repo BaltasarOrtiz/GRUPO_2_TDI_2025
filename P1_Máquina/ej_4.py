@@ -1,0 +1,3 @@
+"""
+4. Desarrollar una aplicación de software que calcule la Capacidad de Canal de un canal R-ario Uniforme y NoUniforme. El soft debe aceptar como entrada el valor de R que identifica al canal (R= 2 Binario, R=3 Ternario hasta R=4) los valores de probabilidades condicionales que representan la matriz del canal entregando como salida el valor de las probabilidades independientes de cada uno de los símbolos de entrada que maximiza la información mutua, esto es, lograr la capacidad de canal.
+"""
