@@ -241,7 +241,7 @@ def main():
 	Función principal del programa
 	Maneja la interfaz de usuario y el flujo principal del programa
 	"""
-	print("🎵 ANALIZADOR WAV COMPLETO - Práctico Máquina 1")
+	print("ANALIZADOR WAV COMPLETO - Práctico Máquina 1")
 	print("="*50)
 	
 	# Obtener directorio base donde está el script
