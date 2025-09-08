@@ -1,52 +1,86 @@
-# Implementar un programa que valide un CUIT/CUIL ingresado por teclado.
+# 8. Implementar un programa que valide un CUIT/CUIL ingresado por teclado.
 
-base = [5, 4, 3, 2, 7, 6, 5, 4, 3, 2] # cuit[i] * (2 + ((9 - i) % 6)) for i in range(10)
-tipos_cuil = [20, 23, 24, 27]
-tipos_cuit = [30, 33, 34]
-tipos = tipos_cuil + tipos_cuit
+# Constantes para la validación
+base = [5, 4, 3, 2, 7, 6, 5, 4, 3, 2]  # Multiplicadores para cada posición del CUIT/CUIL
+tipos_cuil = [20, 23, 24, 27]  # Tipos válidos para CUIL (personas físicas)
+tipos_cuit = [30, 33, 34]      # Tipos válidos para CUIT (personas jurídicas)
+tipos = tipos_cuil + tipos_cuit # Todos los tipos válidos
 
 def tipo2(tipo):
-	if tipo in tipos_cuil: return "CUIL"
-	if tipo in tipos_cuit: return "CUIT"
+	"""
+	Determina si un tipo corresponde a CUIL o CUIT.
+	
+	Args:
+		tipo (int): Los primeros dos dígitos del CUIT/CUIL
+		
+	Returns:
+		str: "CUIL" o "CUIT"
+		
+	Raises:
+		ValueError: Si el tipo no es válido
+	"""
+	if tipo in tipos_cuil: 
+		return "CUIL"
+	if tipo in tipos_cuit: 
+		return "CUIT"
 	raise ValueError("Tipo de CUIL/CUIT no valido")
 
 def validar_cuit(cuit):
-     # Elimina espacios en blanco al inicio y al final
+	"""
+	Valida un CUIT/CUIL según el algoritmo oficial.
+	
+	Args:
+		cuit (str): CUIT/CUIL en formato XX-XXXXXXXX-X
+		
+	Returns:
+		tuple: (bool, str) - (es_válido, tipo)
+	"""
+	# Elimina espacios en blanco al inicio y al final
 	cuit = cuit.strip()
  
-    # Verifica el formato del CUIT/CUIL
+	# Verifica el formato del CUIT/CUIL (XX-XXXXXXXX-X)
 	if len(cuit) != 13 or cuit[2] != "-" or cuit[11] != "-":
-		return False
+		return False, "CUIT/CUIL"
 
-    # Obtiene el tipo (los primeros dos dígitos)
+	# Obtiene el tipo (los primeros dos dígitos)
 	tipo = int(cuit[:2])
-	if(tipo not in tipos): return False
+	if tipo not in tipos: 
+		return False, "CUIT/CUIL"
  
-	# Convierte los caracteres numéricos a una lista de enteros
-	cuit = [int(i) for i in cuit if i.isdigit()]
+	# Convierte solo los dígitos a una lista de enteros (elimina guiones)
+	cuit_digitos = [int(i) for i in cuit if i.isdigit()]
  
-	# Calcula una parte del valor del dígito verificador
-	aux = sum(
-		cuit[i] * base[i] for i in range(10)
+	# Calcula la suma ponderada de los primeros 10 dígitos
+	suma_ponderada = sum(
+		cuit_digitos[i] * base[i] for i in range(10)
 	)
  
-    # Calcula el dígito verificador
-	aux = 11 - aux % 11
+	# Calcula el dígito verificador esperado
+	resto = suma_ponderada % 11
+	digito_verificador = 11 - resto
 
-	if aux == 11: aux = 0
-	if aux == 10: aux = 9
+	# Casos especiales para el dígito verificador
+	if digito_verificador == 11: 
+		digito_verificador = 0
+	if digito_verificador == 10: 
+		digito_verificador = 9
 	
- 	# Verifica si el dígito verificador es correcto y retorna el tipo
-	return aux == cuit.pop(), tipo2(tipo)
+	# Verifica si el dígito verificador calculado coincide con el ingresado
+	# y retorna el resultado junto con el tipo
+	es_valido = digito_verificador == cuit_digitos[10]
+	return es_valido, tipo2(tipo)
 
 
-# print(validar_cuit("20-12345678-9")) # True
-# print(validar_cuit("20-43926518-4")) # True
+# Ejemplos de uso (descomentados para pruebas)
+# print(validar_cuit("20-12345678-9"))  # (False, 'CUIL')
+# print(validar_cuit("20-43926518-4"))  # (True, 'CUIL')
 
 if __name__ == "__main__":
+	# Programa principal: solicita CUIT/CUIL al usuario y lo valida
 	cuit = input("Ingrese un CUIT/CUIL (con guiones): ")
 	es_valido, tipo = validar_cuit(cuit)
+	
 	if es_valido:
-		print(f"El {tipo} ingresado es valido")
+		print(f"El {tipo} ingresado es válido")
 	else:
-		print(f"El {tipo} ingresado no es valido")
+		print(f"El {tipo} ingresado no es válido")
