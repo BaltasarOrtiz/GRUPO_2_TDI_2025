@@ -1,12 +1,12 @@
 # GRUPO_2_TDI_2025
 
-Ejercicios de Máquina de la asignatura Teoría de la Información 2025 de la Licenciatura en Ciencias de la Computación.
+Ejercicios de la asignatura Teoría de la Información 2025 de la Licenciatura en Ciencias de la Computación.
 
 ## Práctico 1
 
 ### Índice
 
-#### P1
+#### P1 - Teoría
 - [P1_GRUPO2_PRACTICA1.docx](./Practico_1/P1_GRUPO2_PRACTICA1.docx)
 
 #### P2 - Canal de Información
